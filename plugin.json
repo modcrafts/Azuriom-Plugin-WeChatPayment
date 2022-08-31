@@ -1,0 +1,15 @@
+{
+    "id": "wechatpayment",
+    "name": "WeChatPayment",
+    "description": "Plugin for Azuriom",
+    "version": "1.0.0",
+    "url": "https://azuriom.com",
+    "authors": [
+        "Azuriom"
+    ],
+    "azuriom_api": "1.0.0",
+    "providers": [
+        "\\Azuriom\\Plugin\\WeChatPayment\\Providers\\WeChatPaymentServiceProvider",
+        "\\Azuriom\\Plugin\\WeChatPayment\\Providers\\RouteServiceProvider"
+    ]
+}
