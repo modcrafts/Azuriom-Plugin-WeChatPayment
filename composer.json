@@ -1,7 +1,7 @@
 {
     "name": "azuriom/wechatpayment",
     "type": "azuriom-plugin",
-    "description": "Plugin for Azuriom",
+    "description": "Plugin to add WeChat to the shop's payment methods.",
     "autoload": {
         "psr-4": {
             "Azuriom\\Plugin\\WeChatPayment\\": "src/"

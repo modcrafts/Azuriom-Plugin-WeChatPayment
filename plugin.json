@@ -1,11 +1,11 @@
 {
     "id": "wechatpayment",
     "name": "WeChatPayment",
-    "description": "Plugin for Azuriom",
+    "description": "Plugin to add WeChat to the shop's payment methods.",
     "version": "1.0.0",
-    "url": "https://azuriom.com",
+    "url": "https://github.com/modcrafts/Azuriom-Plugin-WeChatPayment",
     "authors": [
-        "Azuriom"
+        "MODcraft"
     ],
     "azuriom_api": "1.0.0",
     "providers": [
