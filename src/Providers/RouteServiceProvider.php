@@ -12,7 +12,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
      *
      * @return void
      */
-    public function loadRoutes()
+    public function loadRoutes(): void
     {
         Route::prefix($this->plugin->id)
             ->middleware('web')

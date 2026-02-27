@@ -34,7 +34,7 @@ class WeChatMethod extends PaymentMethod
     {
         $payment = $this->createPayment($cart, $amount, $currency);
 
-        $type = "wechat"; 
+        $type = "wechat";
         $host = $this->gateway->data['host'];
         /*
         $param = urlencode(json_encode(array(
@@ -42,12 +42,13 @@ class WeChatMethod extends PaymentMethod
             "from" => 'Azuriom',
         )));
         */
+        $subject = $this->getPurchaseDescription($payment->id);
 
-        $sign = md5($payment->id."FishPort 付款".$type.$amount.route('shop.payments.notification', $this->id).route('shop.payments.success', $this->id).$this->gateway->data['secret']);
-        
+        $sign = md5($payment->id.$subject.$type.$amount.route('shop.payments.notification', $this->id).route('shop.payments.success', $this->id).$this->gateway->data['secret']);
+
         $attributes = array(
             "out_trade_no" => $payment->id,
-            "subject" => "FishPort 付款",
+            "subject" => $subject,
             "type" => $type,
             "total_amount" => $amount,
             "notify_url" => route('shop.payments.notification', $this->id),
@@ -96,7 +97,7 @@ class WeChatMethod extends PaymentMethod
             'transaction_id' => $orderId,
             'trade_state' => $status
         ] = json_decode(base64_decode($request['response']), true);
-        
+
         /*if ($status === 'Expired') {
             $_sign = md5($orderId.$status.$this->gateway->data['secret']);
             if ($sign !== $_sign) {
@@ -105,8 +106,8 @@ class WeChatMethod extends PaymentMethod
             Payment::firstWhere('transaction_id',$orderId)->update(['status' => 'expired']);
             return response()->noContent();
         }*/
-        
-        
+
+
 
         $payment = Payment::findOrFail($payId);
 
@@ -124,7 +125,7 @@ class WeChatMethod extends PaymentMethod
         return response("success")->header('Content-type','text/plain');
     }
 
-    public function view()
+    public function view(): string
     {
         return 'wechatpayment::admin.wechat-business';
     }
@@ -132,14 +133,14 @@ class WeChatMethod extends PaymentMethod
     public function payquery(Request $request, string $payId)
     {
         return (new \Symfony\Component\HttpFoundation\StreamedResponse(function () use($payId) {
-            
+
             $times = 0;
             while (true) {
                 if ($times >= 100 || connection_aborted()) return;
-                
+
                 $ts = microtime(true);
                 //echo str_repeat("\n", 50000);
-                
+
                 $payment = Payment::findOrFail($payId);
                 if ($payment->isCompleted()) {
                     echo "event: message\ndata: success\nid: $ts\n\n";
@@ -149,7 +150,7 @@ class WeChatMethod extends PaymentMethod
                 } else {
                     echo "event: message\ndata: waiting\nid: $ts\n\n";
                 }
-                
+
                     // Laravel 中不加以下两个 flush 也能测试成功
                     ob_flush();
                     flush();
@@ -164,7 +165,7 @@ class WeChatMethod extends PaymentMethod
         ]))->send();
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'host' => ['required', 'string'],
@@ -172,7 +173,7 @@ class WeChatMethod extends PaymentMethod
         ];
     }
 
-    public function image()
+    public function image(): string
     {
         return asset('plugins/wechatpayment/img/wechat-business.svg');
     }
