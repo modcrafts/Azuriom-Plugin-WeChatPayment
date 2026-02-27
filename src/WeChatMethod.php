@@ -180,6 +180,6 @@ class WeChatMethod extends PaymentMethod
 
     private function logInvalid(Response $response, string $message)
     {
-        Log::warning("[Shop] AliPay - {$message} {$response->effectiveUri()} ({$response->status()}): {$response->json('msg')}");
+        Log::warning("[Shop] WeChatPay - {$message} {$response->effectiveUri()} ({$response->status()}): {$response->json('msg')}");
     }
 }
